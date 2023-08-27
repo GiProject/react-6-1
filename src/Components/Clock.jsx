@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
 
-export default function Clock({timeZone, city, key, removeClock}) {
+export default function Clock({timeZone, city, id, removeClock}) {
     const initialTime = getTime(timeZone);
     const [time, setTime] = useState(initialTime);
 
@@ -15,8 +15,8 @@ export default function Clock({timeZone, city, key, removeClock}) {
         }
     }, [timer]);
 
-    return <div className="clock" key={key}>
-        <div className="remove-clock" onClick={(e) => removeClock(city)}>x</div>
+    return <div className={`clock ${id}`}>
+        <div className="remove-clock" onClick={() => removeClock()}>x</div>   
         <div className="city-clock">{city}</div>
         <div className="time-clock">{time}</div>
     </div>

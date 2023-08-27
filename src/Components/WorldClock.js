@@ -1,6 +1,7 @@
 import moment from "moment"
 import { useState } from "react";
 import Clock from "./Clock";
+import { v4 } from "uuid"
 
 export default function WorldClock({}) {
 
@@ -10,6 +11,7 @@ export default function WorldClock({}) {
     const [values, setValues] = useState({})
 
     const submitHandler = e => {
+        values.id = uid();
         setClocks([...clocks, values]);
     }
 
@@ -18,8 +20,8 @@ export default function WorldClock({}) {
         setValues(values => ({...values, [name]: value}));
     }
 
-    const removeClock = (city) => {
-        setClocks(clocks.filter(clock => clock.city !== city));
+    const removeClock = id => {
+        setClocks(clocks.filter(clock => clock.id !== id));
     }
 
     return <div className="world-clock-block">
@@ -45,15 +47,20 @@ export default function WorldClock({}) {
             </div>
         </div>
         <div className="clocks">
-            {clocks.map(({timeZone, city}) => {
+            {clocks.map(({timeZone, city, id}, index) => {
                 return <Clock
                     timeZone={timeZone}
                     city={city}
-                    key={city}
+                    id={id}
+                    key={index}
                     removeClock={removeClock}
                 />
             })}
         </div>
     </div>
+}
+
+function uid(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
